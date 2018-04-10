@@ -3,6 +3,7 @@
 #Support Telnet & Console(Serial DE-9 specifically)
 #Designed to expedite initial setup of a switch when a backup config isn't available
 #functions for bulk add vlans (either parsing a vlan db file || raw input)
+# # ability to add a vlan(s) to a group of switches
 #setup ip / subnet / gw / dns (raw input)
 #banner / motd config
 #super stretch goal of handling port tagging / trunking
@@ -10,7 +11,7 @@
 
 
 
-
+#!/usr/bin/env python
 
 #import libraries
 import getpass
@@ -44,8 +45,12 @@ def ciscoTelnetLogin(host, user, password):
 	#enable priv mode and send pw
 	tn.write("enable\n")
 	tn.write(privpassword)
-	
 
+#cisco terminate telnet session	+ save changes
+def ciscoTelnetClose():
+	tn.write("end\n")
+	tn.write("wr\n")
+	tn.write("exit\n")
 	
 
 #cisco vlan automation
@@ -58,13 +63,13 @@ def ciscoBulkVlan():
 	for x in range(1, numVlans):
 		vlanNum = raw_input("Enter VLAN #: ")
 		vlanName = raw_input("Enter VLAN name: ")
-		tn.write("vlan " + vlanNum + "\n")
-		tn.write("name " + vlanName + "\n")
+		tn.write("vlan " + str(vlanNum) + "\n")
+		tn.write("name " + str(vlanName) + "\n")
 		tn.write("exit\n")
 
 		
 		
-		
-	
+#for debug purposes display console i/o
+print tn.read_all()
 	
 	
