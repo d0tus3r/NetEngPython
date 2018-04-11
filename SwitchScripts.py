@@ -80,4 +80,39 @@ def dellTelnetLogin(host, user, password):
         tn.write(password + "\n")
 
 
+#cisco auto backup
+def ciscoBackup():
+	#after logging into switch (make sure not in conf t mode)
+	#
+	
+	#set terminal length to 0 so full config can be dumped without user input (changing pages)
+	tn.write("terminal length 0\n")
+	#show running-config 
+	tn.write("show run\n")
+	#close session
+	tn.write("exit\n")
+	#store output in var named configOutput
+	configOutput = tn.read_all()
+	#open a file called switch and IP and set it to writeable
+	#might be useful to incorporate date + time in file name -- come back to this
+	backupConfig = open("switch" + host, "w")
+	#copy configOutput contents to the file and then close file.
+	backupConfig.write(configOutput)
+	backupConfig.close
+			
+		
 
+#parsing file for switches - switch db file myswitches
+#will tie this into other functions, just keeping for theory
+#maybe create program db of switches and names for interacting? dictionary etc
+def checkSwitchDB():
+	#open local file named myswitches
+	f = open('myswitches')
+	
+	#parse file and grab each line
+	for line in f:
+		print "Connecting to switch " + (line)
+		host = line.strip()
+		
+	f.close()
+	
