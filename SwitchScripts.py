@@ -25,7 +25,7 @@ password = getpass.getpass()
 privpassword = getpass.getpass()
 
 #create telnet session to host
-tn = telnetLib.Telnet(host)
+tn = telnetlib.Telnet(host)
 
 
 
