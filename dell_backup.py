@@ -3,7 +3,6 @@
 ''' Dell PowerConnect 3xxx5xxx series auto backup script parses file
 'dellSwitches' for IPs to telnet and copy backup configuration '''
 
-# import necessary libraries
 import getpass
 import telnetlib
 import time
@@ -17,27 +16,27 @@ now = datetime.datetime.now()
 timestamp = (str(now.month) + "-" + str(now.day) + "-" + str(now.year))
 
 
-# pass login credentials to telnet session
-def dellLogin():
+def dell_login():
+    ''' pass login credentials to telnet session '''
     tn.read_until("User Name:")
     tn.write(user + "\n")
     tn.read_until("Password:")
     tn.write(str(password) + "\n")
 
 
-# set datadump mode to remove need for user input on bulk data dump
-# dump runningcfg and save to file
-def dellGetBackup():
+def dell_get_backup():
+    ''' set datadump mode to remove need for user input on bulk data dump dump
+    runningcfg and save to file '''
     tn.read_until("#")
     tn.write("terminal datadump\n")
     tn.read_until("#")
     tn.write("show running-config\n")
     # sleep after show running config for command to finish
     time.sleep(10)
-    configOutput = tn.read_very_eager()
-    backupConfig = open(str(host) + "-" + timestamp, "w")
-    backupConfig.write(configOutput)
-    backupConfig.close()
+    config_output = tn.read_very_eager()
+    backup_config = open(str(host) + "-" + timestamp, "w")
+    backup_config.write(config_output)
+    backup_config.close()
     tn.write("exit\n")
 
 
@@ -50,7 +49,7 @@ for line in f:
 
     tn = telnetlib.Telnet(host)
 
-    dellLogin()
-    dellGetBackup()
+    dell_login()
+    dell_get_backup()
 
 f.close()
