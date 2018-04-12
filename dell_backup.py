@@ -18,26 +18,27 @@ timestamp = (str(now.month) + "-" + str(now.day) + "-" + str(now.year))
 
 def dell_login():
     ''' pass login credentials to telnet session '''
-    tn.read_until("User Name:")
-    tn.write(user + "\n")
-    tn.read_until("Password:")
-    tn.write(str(password) + "\n")
+    tn.read_until(b"User Name:")
+    tn.write(user.encode('ascii') + b"\n")
+    tn.read_until(b"Password:")
+    tn.write(str(password).encode('ascii') + b"\n")
 
 
 def dell_get_backup():
     ''' set datadump mode to remove need for user input on bulk data dump dump
     runningcfg and save to file '''
-    tn.read_until("#")
-    tn.write("terminal datadump\n")
-    tn.read_until("#")
-    tn.write("show running-config\n")
+    tn.read_until(b"#")
+    tn.write(b"terminal datadump\n")
+    tn.read_until(b"#")
+    tn.write(b"show running-config\n")
     # sleep after show running config for command to finish
     time.sleep(10)
     config_output = tn.read_very_eager()
     backup_config = open(str(host) + "-" + timestamp, "w")
-    backup_config.write(config_output)
+    #Decode the previously encoded data to clean up the output
+    backup_config.write((config_output.decode()))
     backup_config.close()
-    tn.write("exit\n")
+    tn.write(b"exit\n")
 
 # file path to dellSwitches
 f = open("dellSwitches")
