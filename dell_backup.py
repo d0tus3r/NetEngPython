@@ -3,15 +3,15 @@
 ''' Dell PowerConnect 3xxx5xxx series auto backup script parses file
 'dellSwitches' for IPs to telnet and copy backup configuration '''
 
-import getpass
 import telnetlib
 import time
 import datetime
+from config import CONFIG
 
 
 # setup username and password creds for telnet session
-user = input("Enter username for telnet session: ")
-password = getpass.getpass()
+user = CONFIG.get('DELL', 'USERNAME')
+password = CONFIG.get('DELL', 'PASSWORD')
 now = datetime.datetime.now()
 timestamp = (str(now.month) + "-" + str(now.day) + "-" + str(now.year))
 
@@ -38,7 +38,6 @@ def dell_get_backup():
     backup_config.write(config_output)
     backup_config.close()
     tn.write("exit\n")
-
 
 # file path to dellSwitches
 f = open("dellSwitches")
