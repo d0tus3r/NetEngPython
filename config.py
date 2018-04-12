@@ -1,5 +1,5 @@
 import configparser
+from os import path
 
 CONFIG = configparser.ConfigParser()
-
-CONFIG.read('~/.dell_backup.ini')
+CONFIG.read(path.expanduser('~/.neteng.ini'))
