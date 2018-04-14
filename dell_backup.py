@@ -10,18 +10,18 @@ from config import CONFIG
 
 
 # setup username and password creds for telnet session
-user = CONFIG.get('DELL', 'USERNAME')
-password = CONFIG.get('DELL', 'PASSWORD')
-now = datetime.datetime.now()
-timestamp = (str(now.month) + "-" + str(now.day) + "-" + str(now.year))
+USER = CONFIG.get('DELL', 'USERNAME')
+PASSWORD = CONFIG.get('DELL', 'PASSWORD')
+NOW = datetime.datetime.now()
+TIMESTAMP = (str(NOW.month) + "-" + str(NOW.day) + "-" + str(NOW.year))
 
 
 def dell_login():
     ''' pass login credentials to telnet session '''
     tn.read_until(b"User Name:")
-    tn.write(user.encode('ascii') + b"\n")
+    tn.write(USER.encode('ascii') + b"\n")
     tn.read_until(b"Password:")
-    tn.write(str(password).encode('ascii') + b"\n")
+    tn.write(str(PASSWORD).encode('ascii') + b"\n")
 
 
 def dell_get_backup():
@@ -34,16 +34,16 @@ def dell_get_backup():
     # sleep after show running config for command to finish
     time.sleep(10)
     config_output = tn.read_very_eager()
-    backup_config = open(str(host) + "-" + timestamp, "w")
+    backup_config = open(str(host) + "-" + TIMESTAMP, "w")
     #Decode the previously encoded data to clean up the output
     backup_config.write((config_output.decode()))
     backup_config.close()
     tn.write(b"exit\n")
 
 # file path to dellSwitches
-f = open("dellSwitches")
+F = open("dellSwitches")
 # main loop - run two functions on each IP found in dellSwitches file
-for line in f:
+for line in F:
     print("Connecting to switch {}", str(line))
     host = line.strip()
 
@@ -52,4 +52,4 @@ for line in f:
     dell_login()
     dell_get_backup()
 
-f.close()
+F.close()
