@@ -44,7 +44,7 @@ def dell_get_backup():
 F = open("dellSwitches")
 # main loop - run two functions on each IP found in dellSwitches file
 for line in F:
-    print("Connecting to switch {}", str(line))
+    print("Connecting to switch {}".format(str(line)))
     host = line.strip()
 
     tn = telnetlib.Telnet(host)
