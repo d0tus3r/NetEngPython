@@ -8,7 +8,7 @@
 #banner / motd config
 #super stretch goal of handling port tagging / trunking
 #Look into NetMiko for ssh python library // this may end up being two diff scripts
-    
+
 
 
 #!/usr/bin/env python
@@ -18,7 +18,7 @@ import getpass
 import sys
 import telnetlib
 
-#declare and init vars 
+#declare and init vars
 host = raw_input("Enter host ip: ")
 user = raw_input("Enter telnet username: ")
 password = getpass.getpass()
@@ -38,8 +38,8 @@ def ciscoTelnetLogin(host, user, password):
     #check for pw and send if detected
     if password:
         tn.read_until("Password: ")
-	tn.write(password + "\n")
-		
+        tn.write(password + "\n")
+
     #enable priv mode and send pw
     tn.write("enable\n")
     tn.write(privpassword)
@@ -49,7 +49,7 @@ def ciscoTelnetClose():
     tn.write("end\n")
     tn.write("wr\n")
     tn.write("exit\n")
-	
+
 
 #cisco vlan automation
 def ciscoBulkVlan():
@@ -60,16 +60,16 @@ def ciscoBulkVlan():
     #get vlan number and name then add vlan to switch vlan db
     for x in range(1, numVlans):
         vlanNum = raw_input("Enter VLAN #: ")
-	vlanName = raw_input("Enter VLAN name: ")
-	tn.write("vlan " + str(vlanNum) + "\n")
-	tn.write("name " + str(vlanName) + "\n")
-	tn.write("exit\n")
+        vlanName = raw_input("Enter VLAN name: ")
+        tn.write("vlan " + str(vlanNum) + "\n")
+        tn.write("name " + str(vlanName) + "\n")
+        tn.write("exit\n")
 
-		
-		
+
+
 #for debug purposes display console i/o
-print tn.read_all()
-	
+print(tn.read_all())
+
 #Dell PowerConnect telnet login
 def dellTelnetLogin(host, user, password):
     tn.read_until("User Name: ")
@@ -84,10 +84,10 @@ def dellTelnetLogin(host, user, password):
 def ciscoBackup():
 	#after logging into switch (make sure not in conf t mode)
 	#
-	
+
 	#set terminal length to 0 so full config can be dumped without user input (changing pages)
 	tn.write("terminal length 0\n")
-	#show running-config 
+	#show running-config
 	tn.write("show run\n")
 	#close session
 	tn.write("exit\n")
@@ -99,8 +99,8 @@ def ciscoBackup():
 	#copy configOutput contents to the file and then close file.
 	backupConfig.write(configOutput)
 	backupConfig.close
-			
-		
+
+
 
 #parsing file for switches - switch db file myswitches
 #will tie this into other functions, just keeping for theory
@@ -108,11 +108,10 @@ def ciscoBackup():
 def checkSwitchDB():
 	#open local file named myswitches
 	f = open('myswitches')
-	
+
 	#parse file and grab each line
 	for line in f:
-		print "Connecting to switch " + (line)
+		print("Connecting to switch " + (line))
 		host = line.strip()
-		
+
 	f.close()
-	
